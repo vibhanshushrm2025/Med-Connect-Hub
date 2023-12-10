@@ -10,6 +10,7 @@ import {
   // import {Context, server} from '../index'
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/features/userSlice";
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
   
   const Register = () => {
     const [name, setName] = useState("");
@@ -27,7 +28,7 @@ import { setUser } from "../redux/features/userSlice";
       try {
           //through axios , 1st argument ---> link , 2nd argument ---> body json , 3rd argument--->always same as below
           console.log("a");
-          // setloading(true);
+          dispatch(showLoading());
           const usr = await axios.post(`/api/v1/users/register`,{
               name:name,
               email:email,
@@ -39,35 +40,21 @@ import { setUser } from "../redux/features/userSlice";
               },
               withCredentials:true
           });
-          
           const {data}=usr;
           const {message}=data;
           if(data.success){
-            dispatch(setUser(data.user));
             toast.success(message);
+            dispatch(setUser(data.user));
           }
           else{
             toast.error(message);
+            console.log(message);
           }
-          // {
-          //   data.success?setIsAuthenticated(true):setIsAuthenticated(false);
-          // }
-          // {
-          //   data.success?toast.success(message):toast.error(message);
-          // }
-          // setloading(false);
-          console.log(usr);
-          console.log("a");
-          // toast.success(message);
-          console.log(data);
+          dispatch(hideLoading());
       } catch (error) {
           toast.error("error");
-          console.log(error);
-          // setloading(false);
-  
-      }
-      
-      
+          console.log(error);  
+      } 
     }
     if(isAuthenticated) return <Navigate to={"/"}/>// Navigate functionality is good .
     return (

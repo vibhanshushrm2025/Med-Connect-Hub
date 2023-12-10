@@ -7,6 +7,7 @@ import axios from 'axios';
 import { toast } from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser,desetUser } from '../redux/features/userSlice';
+import { hideLoading, showLoading } from '../redux/features/alertSlice';
 const Navbar = () => {
     const dispatch = useDispatch();
     const isAuthenticated=useSelector((state)=>state.user.isAuthenticated);
@@ -16,7 +17,7 @@ const Navbar = () => {
     // So , I changed all the 404 response from  the api into the 201 status code 
     try {
         //through axios , 1st argument ---> link , 2nd argument ---> body json , 3rd argument--->always same as below
-        // setloading(true);
+        dispatch(showLoading());
         const usr = await axios.get(`/api/v1/users/logout`,
         {
             withCredentials:true
@@ -24,24 +25,16 @@ const Navbar = () => {
         const {data}=usr;
         const {message}=data; 
         if(data.success){
-            dispatch(desetUser());
             toast.success(message);
+            dispatch(desetUser());
         }       
         else {
             toast.error(message);
         }
-        // {
-        //   data.success?setIsAuthenticated(false):setIsAuthenticated(true);
-        // }
-        // {
-        //   data.success?toast.success(message):toast.error(message);
-        // }
-        // setloading(false);
+        dispatch(hideLoading());
     } catch (error) {
         toast.error("error");
-        // setloading(false);
     }
-    // you can't use return statement here , why i don't know , 
   }
   return (
     <nav className='header'>

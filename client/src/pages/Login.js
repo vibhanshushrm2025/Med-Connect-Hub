@@ -12,6 +12,7 @@ import { useContext, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/features/userSlice";
+import { hideLoading, showLoading } from "../redux/features/alertSlice";
 const Login = () => {
   // const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ const Login = () => {
     try {
         //through axios , 1st argument ---> link , 2nd argument ---> body json , 3rd argument--->always same as below
         // setloading(true);
+        dispatch(showLoading());
         const usr = await axios.post(`/api/v1/users/login`,{
             email:email,
             password:password
@@ -41,24 +43,15 @@ const Login = () => {
         const {data}=usr;
         const {message}=data;
         if(data.success){
-          dispatch(setUser(data.user));
           toast.success(message);
+          dispatch(setUser(data.user));
         }
         else{
           toast.error(message);
         }
-        // {
-        //   data.success?setIsAuthenticated(true):setIsAuthenticated(false);
-        // }
-        // {
-        //   data.success?toast.success(message):toast.error(message);
-        // }
-        // setloading(false);
-        console.log(data);
+        dispatch(hideLoading());
     } catch (error) {
         toast.error("error");
-        // setloading(false);
-
     }
     
     
