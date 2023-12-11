@@ -9,6 +9,7 @@ import {
   } from "react-router-dom";
 // import { Context, server } from "../index";
 import { useContext, useState } from "react";
+import {  message } from "antd";
 import { toast } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/features/userSlice";
@@ -40,18 +41,25 @@ const Login = () => {
             },
             withCredentials:true
         });
+        console.log(usr);
         const {data}=usr;
         const {message}=data;
         if(data.success){
-          toast.success(message);
-          dispatch(setUser(data.user));
+          // message.success(messag);
+          const user = await axios
+          .get(`/api/v1/users/me`, {
+            withCredentials: true,
+          });
+          dispatch(setUser(user.data.user));
         }
         else{
-          toast.error(message);
+          // message.error(messag);
+          console.log(message);
         }
         dispatch(hideLoading());
     } catch (error) {
-        toast.error("error");
+        // message.error("error");
+        dispatch(hideLoading());
     }
     
     

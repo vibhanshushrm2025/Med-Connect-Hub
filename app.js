@@ -1,5 +1,6 @@
 import express from "express";
 import userrouter from "./routes/user.js";
+import adminrouter from "./routes/admin.js";
 import { connectDb } from "./data/database.js";
 import cookieParser from "cookie-parser"
 import cors from "cors";
@@ -22,6 +23,7 @@ app.use(cors({
 app.use(express.json());
 
 app.use("/api/v1/users",userrouter);
+app.use("/api/v1/admin",adminrouter);
 
 
 app.get("/",(req,res)=>{

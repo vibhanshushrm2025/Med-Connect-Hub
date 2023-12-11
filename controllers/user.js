@@ -2,6 +2,7 @@ import { mdl } from "../models/user.js";
 import bcrypt from "bcrypt";
 import { setCookie } from "../utils/features.js";
 import errorHandlingClass from "../middlewares/error.js";
+import {doctorModel} from "../models/doctorModel.js";
 export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -19,22 +20,36 @@ export const register = async (req, res, next) => {
     });
     setCookie(uss, 201, "Registered Successfully", true, res); // setcookie , a the function that is repeating , so , are put inside the utils features.js
   } catch (error) {
+    
     next(error);
+  }
+};
+export const getAllDocotrsController = async (req, res) => {
+  try {
+    const doctors = await doctorModel.find({ status: "approved" });
+    res.status(200).send({
+      success: true,
+      message: "Docots Lists Fetched Successfully",
+      data: doctors,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Errro WHile Fetching DOcotr",
+    });
   }
 };
 export const login = async (req, res, next) => {
   try {
-    console.log(req.body);
     const { email, password } = req.body;
     const user = await mdl.findOne({ email: email }).select("+password"); // finding does user exists on mongodb . And this select will
     // give you only selected fields and this plus will let you access the
     // the fields along with the one whose select is true
-    console.log(user);
     if (!user)
       return next(new errorHandlingClass("user doesn't exist", 201, false));
-    console.log(password, "   ", user.password, " hello");
     const tof = await bcrypt.compare(password, user.password); // if user exists ,then compare the passwords ,
-    console.log(tof, "bool");
     if (tof) {
       // if user exists , then make arrangements of the cookie , encrypt the token , and set expiry date
       setCookie(user, 201, "LoggedIn successfully", true, res);
@@ -77,3 +92,82 @@ export const logout =  (req, res, next) => {
     message: "LoggedOut successfully",
   });
 };
+
+export const applyDoctorController = async (req, res) => {
+  try {
+    const newDoctor = await doctorModel.create({ ...req.body, status: "pending" });
+    const adminUser = await mdl.findOne({ isAdmin: true });
+    const notifcation = adminUser.notifcation;
+    notifcation.push({
+      type: "apply-doctor-request",
+      message: `${newDoctor.firstName} ${newDoctor.lastName} Has Applied For A Doctor Account`,
+      data: {
+        doctorId: newDoctor._id,
+        name: newDoctor.firstName + " " + newDoctor.lastName,
+        onClickPath: "/admin/docotrs",
+      },
+    });
+    await mdl.findByIdAndUpdate(adminUser._id, { notifcation });
+    res.status(201).send({
+      success: true,
+      message: "Doctor Account Applied SUccessfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error WHile Applying For Doctotr",
+    });
+  }
+};
+
+
+export const getAllNotificationController = async (req, res) => {
+  try {
+    const user = await mdl.findOne({ _id: req.body.userId });
+    const seennotification = user.seennotification;
+    const notifcation = user.notifcation;
+    seennotification.push(...notifcation);
+    user.notifcation = [];
+    user.seennotification = notifcation;
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    res.status(200).send({
+      success: true,
+      message: "all notification marked as read",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error in notification",
+      success: false,
+      error,
+    });
+  }
+};
+
+// delete notifications
+export const deleteAllNotificationController = async (req, res) => {
+  try {
+    const user = await mdl.findOne({ _id: req.body.userId });
+    user.notifcation = [];
+    user.seennotification = [];
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    res.status(200).send({
+      success: true,
+      message: "Notifications Deleted successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: "unable to delete all notifications",
+      error,
+    });
+  }
+};
+
