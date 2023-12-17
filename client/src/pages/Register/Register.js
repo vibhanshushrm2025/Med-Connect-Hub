@@ -10,8 +10,9 @@ import { toast } from "react-hot-toast";
 import axios from "axios";
 // import {Context, server} from '../index'
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../redux/features/userSlice";
-import { hideLoading, showLoading } from "../redux/features/alertSlice";
+import { setUser } from "../../redux/features/userSlice";
+import { hideLoading, showLoading } from "../../redux/features/alertSlice";
+import { Wrapper } from "./Styles";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -62,42 +63,63 @@ const Register = () => {
   };
   if (isAuthenticated) return <Navigate to={"/"} />; // Navigate functionality is good .
   return (
-    <div className="login">
-      <section>
+    <Wrapper>
+      <div className="full-height-wrapper">
         <form onSubmit={submithandler}>
-          <input
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-            type="text"
-            placeholder="Name"
-            required
-          />
-          <input
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-            type="email"
-            placeholder="Email"
-            required
-          />
-          <input
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-            type="password"
-            required
-            placeholder="Password"
-          />
-          <button type="submit">Sign Up</button>
-          <h4>Or</h4>
-          <Link to="/login">Log In</Link>
+          <div className="container ">
+            <h1 className="headingname">Med Connect Hub </h1>
+          </div>
+
+          <div className="container" >
+            <div className="card101">
+              <span className="login">Create Account </span>
+              <div className="inputBox">
+                <input
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  type="text"
+                  required="required"
+                />
+                <span className="user">Name</span>
+              </div>
+              <div className="inputBox">
+                <input
+                  value={email}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                  type="email"
+                  required="required"
+                />
+                <span className="user">Email</span>
+              </div>
+
+              <div className="inputBox">
+                <input
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                  type="password"
+                  required="required"
+                />
+                <span>Password</span>
+              </div>
+              <button type="submit" className="enter">
+                Register
+              </button>
+              <Link to="/login"  style={{ textDecoration: "none", marginTop: "-20px", marginBottom: "-40px" }}>
+                <button className="enter">
+                  Login-{">"}
+                </button>
+              </Link>
+            </div>
+          </div>
         </form>
-      </section>
-    </div>
+      </div>
+    </Wrapper>
   );
 };
 

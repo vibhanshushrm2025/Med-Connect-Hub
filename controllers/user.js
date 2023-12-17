@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import { setCookie } from "../utils/features.js";
 import errorHandlingClass from "../middlewares/error.js";
 import {doctorModel} from "../models/doctorModel.js";
+import moment from "moment";
+import { appointment } from "../models/appointment.js";
 export const register = async (req, res, next) => {
   try {
     const { name, email, password } = req.body;
@@ -171,3 +173,91 @@ export const deleteAllNotificationController = async (req, res) => {
   }
 };
 
+//BOOK APPOINTMENT
+export const bookeAppointmnetController = async (req, res) => {
+  try {
+    req.body.date = moment(req.body.date, "DD-MM-YYYY").toISOString();
+    req.body.time = moment(req.body.time, "HH:mm").toISOString();
+    req.body.status = "pending";
+    const newAppointment = new appointment(req.body);
+    await newAppointment.save();
+    const user = await mdl.findOne({ _id: req.body.doctorInfo.userId });
+    user.notifcation.push({
+      type: "New-appointment-request",
+      message: `A nEw Appointment Request from ${req.body.userInfo.name}`,
+      onCLickPath: "/user/appointments",
+    });
+    await user.save();
+    res.status(200).send({
+      success: true,
+      message: "Appointment Book succesfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error While Booking Appointment",
+    });
+  }
+};
+
+// booking bookingAvailabilityController
+export const bookingAvailabilityController = async (req, res) => {
+  try {
+    const date = moment(req.body.date, "DD-MM-YY").toISOString();
+    const fromTime = moment(req.body.time, "HH:mm")
+      .subtract(1, "hours")
+      .toISOString();
+    const toTime = moment(req.body.time, "HH:mm").add(1, "hours").toISOString();
+    const doctorId = req.body.doctorId;
+    const appointments = await appointment.find({
+      doctorId,
+      date,
+      time: {
+        $gte: fromTime,
+        $lte: toTime,
+      },
+    });
+    if (appointments.length > 0) {
+      return res.status(200).send({
+        message: "Appointments not Availibale at this time",
+        success: true,
+      });
+    } else {
+      return res.status(200).send({
+        success: true,
+        message: "Appointments available",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error In Booking",
+    });
+  }
+};
+
+export const userAppointmentsController = async (req, res) => {
+  try {
+    const appointments = await appointment.find({
+      userId: req.body.userId,
+    });
+    console.log(req.body);
+    console.log(appointments);
+    res.status(200).send({
+      success: true,
+      message: "Users Appointments Fetch SUccessfully",
+      data: appointments,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      error,
+      message: "Error In User Appointments",
+    });
+  }
+};

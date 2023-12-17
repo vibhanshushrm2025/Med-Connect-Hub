@@ -1,17 +1,21 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/Homepage";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
+import Login from "./pages/Login/Login";
+import Register from "./pages/Register/Register";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./redux/features/userSlice";
 import { hideLoading, showLoading } from "./redux/features/alertSlice";
-import Loader from "./components/Loader";
+import Loader from "./components/Loader/Loader";
 import ApplyDoctor from "./pages/ApplyDoctor";
 import NotificationPage from "./pages/NotificationPage";
-import Doctors from './pages/adminPannel/Doctors';
+import Doctors from "./pages/adminPannel/Doctors";
 import Users from "./pages/adminPannel/Users";
+import Profile from "./pages/doctorPannel/profile";
+import DoctorAppointments from "./pages/doctorPannel/DoctorAppointments";
+import BookingPage from "./pages/BookingPage";
+import Appointments from "./pages/Appointments";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,6 +55,16 @@ function App() {
               <Route path="/notification" element={<NotificationPage />} />
               <Route path="/admin/doctors" element={<Doctors />} />
               <Route path="/admin/users" element={<Users />} />
+              <Route path="/doctor/profile/:id" element={<Profile />} />
+              <Route
+                path="/doctor-appointments"
+                element={<DoctorAppointments />}
+              />
+              <Route
+                path="/doctor/book-appointment/:doctorId"
+                element={<BookingPage />}
+              />
+              <Route path="/appointments" element={<Appointments />} />
             </Routes>
           </BrowserRouter>
         </>

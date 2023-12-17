@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useSelector, useDispatch } from "react-redux";
-import Loader from "../components/Loader";
+import Loader from "../components/Loader/Loader";
 import Layout from "../components/Layout/Layout";
 import { Row } from "antd";
 import DoctorList from "../components/DoctorList";
@@ -14,15 +14,13 @@ const Home = () => {
   // login user data
   const getUserData = async () => {
     try {
-      const res = await axios.get(
-        "/api/v1/users/getAllDoctors",
-        {
-          headers:{
-              "Content-Type":"application/json",
-          },
-          withCredentials:true
+      const res = await axios.get("/api/v1/users/getAllDoctors", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
       });
-      
+
       if (res.data.success) {
         setDoctors(res.data.data);
       }
@@ -43,7 +41,6 @@ const Home = () => {
   if (!isAuthenticated) {
     return <Navigate to={"/login"} />;
   }
-  
 
   return (
     <Layout>
