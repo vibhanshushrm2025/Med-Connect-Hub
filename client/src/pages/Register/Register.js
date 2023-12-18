@@ -5,16 +5,16 @@ import {
   Link,
   Navigate,
 } from "react-router-dom";
-import { useContext, useState } from "react";
-import { toast } from "react-hot-toast";
+import {  useState } from "react";
 import axios from "axios";
-// import {Context, server} from '../index'
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/features/userSlice";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { Wrapper } from "./Styles";
 
-const Register = () => {
+
+const Register = ({popUpHandler}) => {
+  
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,20 +44,20 @@ const Register = () => {
         }
       );
       const { data } = usr;
-      const { message } = data;
+      dispatch(hideLoading());
       if (data.success) {
-        toast.success(message);
         const user = await axios.get(`/api/v1/users/me`, {
           withCredentials: true,
         });
         dispatch(setUser(user.data.user));
+        popUpHandler(true,"Register Successfully!","Welcome !!");
       } else {
-        toast.error(message);
-        console.log(message);
+        popUpHandler(false,usr.data.message, "Registration Failed");
+        console.log(usr.data.message);
       }
-      dispatch(hideLoading());
     } catch (error) {
-      toast.error("error");
+      dispatch(hideLoading());
+      popUpHandler(false,"Something Went Wrong", "Registration Failed");
       console.log(error);
     }
   };

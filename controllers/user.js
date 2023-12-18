@@ -245,12 +245,18 @@ export const userAppointmentsController = async (req, res) => {
     const appointments = await appointment.find({
       userId: req.body.userId,
     });
-    console.log(req.body);
     console.log(appointments);
+    const newAppointments = await Promise.all(appointments.map(async(appoint,index)=>{
+        const doctor = await doctorModel.findById(appoint.doctorId);
+        const obj = {...appoint._doc,firstName:doctor.firstName,lastName:doctor.lastName};
+        console.log(obj);
+        return obj;
+    }));
+    console.log(newAppointments);
     res.status(200).send({
       success: true,
       message: "Users Appointments Fetch SUccessfully",
-      data: appointments,
+      data: newAppointments,
     });
   } catch (error) {
     console.log(error);

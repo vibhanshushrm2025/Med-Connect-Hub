@@ -7,6 +7,7 @@ const Loader = () => {
     //     <span className="visually-hidden">Loading...</span>
     //   </div>
     // </div>
+	<div className="full-height-wrapper">
     <div className="socket">
 			<div className="gel center-gel">
 				<div className="hex-brick h1"></div>
@@ -196,6 +197,7 @@ const Loader = () => {
 				<div className="hex-brick h3"></div>
 			</div>
 			
+		</div>
 		</div>
   );
 };

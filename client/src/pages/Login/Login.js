@@ -1,23 +1,14 @@
-// import React from 'react'
 import axios from "axios";
 import {
-  // BrowserRouter as Router,
-  // Routes,
-  // Route,
   Link,
   Navigate,
 } from "react-router-dom";
-// import { Context, server } from "../index";
-import { useContext, useState } from "react";
-
-import { message } from "antd";
-import { toast } from "react-hot-toast";
+import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../redux/features/userSlice";
 import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { Wrapper } from "./Styles";
-const Login = () => {
-  // const [name, setName] = useState("");
+const Login = ({popUpHandler}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
@@ -49,20 +40,21 @@ const Login = () => {
       console.log(usr);
       const { data } = usr;
       const { message } = data;
+      dispatch(hideLoading());
       if (data.success) {
-        // message.success(messag);
         const user = await axios.get(`/api/v1/users/me`, {
           withCredentials: true,
         });
         dispatch(setUser(user.data.user));
+        popUpHandler(true,"LoggedIn Successfully","Welcome Back !");
+
       } else {
-        // message.error(messag);
+        popUpHandler(false,"LoggedIn Failed",message);
         console.log(message);
       }
-      dispatch(hideLoading());
     } catch (error) {
-      // message.error("error");
       dispatch(hideLoading());
+      popUpHandler(false,"LoggedIn Failed","Something Went Wrong");
     }
   };
 

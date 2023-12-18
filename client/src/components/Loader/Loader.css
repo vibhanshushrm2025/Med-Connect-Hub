@@ -7,6 +7,14 @@
     top: 50%;
     margin-top: -100px;
   }
+  .full-height-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.383);
+  }
   
   .hex-brick {
     background: #000000;
