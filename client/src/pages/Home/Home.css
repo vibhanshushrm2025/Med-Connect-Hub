@@ -5,6 +5,7 @@
   /* --primary-color-dark: #9333ea; */
   --primary-color: #547bf0;
   --primary-color-dark: #336dea;
+  /* #008bf8 This is vibrant color , this can also be used */
   /* --secondary-color: #ca8a04; */
   --secondary-color: #336dea;
   --text-dark: #1f2937;
@@ -70,7 +71,7 @@ nav .checkbox i {
   cursor: pointer;
 }
 
-ul {
+#navbaar {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -79,7 +80,7 @@ ul {
   margin-bottom: 0;
 }
 
-ul li a {
+#navbaar li a {
   padding: 0.5rem 1rem;
   border: 2px solid transparent;
   text-decoration: none;
@@ -88,7 +89,7 @@ ul li a {
   transition: 0.3s;
 }
 
-ul li a:hover {
+#navbaar li a:hover {
   border-top-color: var(--secondary-color);
   border-bottom-color: var(--secondary-color);
   color: var(--secondary-color);
@@ -189,7 +190,7 @@ ul li a:hover {
     display: block;
   }
 
-  ul {
+  #navbaar {
     position: absolute;
     width: 100%;
     height: calc(100vh - 85px);
@@ -201,11 +202,11 @@ ul li a:hover {
     gap: 3rem;
   }
 
-  nav #check:checked ~ ul {
+  nav #check:checked ~ #navbaar {
     left: 0;
   }
 
-  ul li a {
+  #navbaar li a {
     font-size: 1.25rem;
   }
 
@@ -504,8 +505,134 @@ tr {
   align-items: center;
 }
 
-.modal-content {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
+.notification-card {
+  animation: popIn 0.2s ease-out 0s forwards;
 }
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  };
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.notification-card{
+  width: 40%;
+  height:50%;
+  background-color: rgb(255, 255, 255,0.7);
+  border-radius: 40px
+}
+.toggle-bar{
+  display: flex;
+  padding: 5px;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.notiBar{
+  padding: 20px;
+  width: 50%;
+  /* border-bottom: 1px solid #aba9a9; */
+  text-align: center;
+  margin: 5px;
+  cursor: pointer;
+}
+.notiBar:hover{
+  background-color: var(--extra-light);
+  border-radius: 40px;
+}
+.notiActive{
+  background-color: var(--primary-color);
+  border-radius: 40px
+}
+.notiActive:hover{
+  background-color: var(--primary-color);
+}
+.contentNoti{
+  height: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.notiChange{
+  margin-top: auto;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom :5px;
+  cursor: pointer;
+}
+.markRead{
+  background-color: var(--extra-light);
+  color: black;
+}
+.markRead:hover{
+  background-color: #a8abf5;
+}
+.deleteRead{
+  background-color: rgba(255, 0, 0, 0.426);
+  color: black;
+}
+.deleteRead:hover{
+  background-color: rgba(255, 0, 0, 0.621);
+}
+.notiList{
+  /* margin :auto; */
+  margin: 20px;
+  overflow-y: auto; /* Only show vertical scrollbar when necessary */
+  overflow-x: hidden;
+}
+.notiList::-webkit-scrollbar {
+  width: 2px; /* Width of the scrollbar */
+}
+
+.notiList::-webkit-scrollbar-track {
+  background: rgb(241, 241, 241,0); /* Color of the track */
+}
+
+.notiList::-webkit-scrollbar-thumb {
+  background: #888; /* Color of the scroll thumb */
+}
+
+.notiList::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Color of the scroll thumb on hover */
+}
+
+.close {
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  opacity: 0.3;
+}
+.close:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+.close:before, .close:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 33px;
+  width: 2px;
+  background-color: black;
+}
+.close:before {
+  transform: rotate(45deg);
+}
+.close:after {
+  transform: rotate(-45deg);
+}
+
+.statusUpdateBtn{
+  background-color: var(--primary-color);
+  color: white;
+  border-radius: 20px;
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+}
+

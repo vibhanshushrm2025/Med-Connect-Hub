@@ -8,19 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "./redux/features/userSlice";
 import { hideLoading, showLoading } from "./redux/features/alertSlice";
 import Loader from "./components/Loader/Loader";
-import ApplyDoctor from "./pages/ApplyDoctor";
-import NotificationPage from "./pages/NotificationPage";
+import ApplyDoctor from "./pages/ApplyDoctor/Applydoctor";
 import Doctors from "./pages/adminPannel/Doctors";
 import Users from "./pages/adminPannel/Users";
-import Profile from "./pages/doctorPannel/profile";
-import DoctorAppointments from "./pages/doctorPannel/DoctorAppointments";
-import BookingPage from "./pages/BookingPage";
-import Appointments from "./pages/Appointments";
+import UpdateProfile from "./pages/UpdateProfile/UpdateProfile";
 import {
   NotificationContainer,
   NotificationManager,
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
+import SearchDoctors from "./pages/SearchDoctors/SearchDoctors";
 
 function App() {
   const dispatch = useDispatch();
@@ -63,7 +60,10 @@ function App() {
         <>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<HomePage />} />
+              <Route
+                path="/"
+                element={<HomePage popUpHandler={popUpHandler} />}
+              />
               <Route
                 path="/login"
                 element={<Login popUpHandler={popUpHandler} />}
@@ -72,20 +72,20 @@ function App() {
                 path="/register"
                 element={<Register popUpHandler={popUpHandler} />}
               />
-              <Route path="/apply-doctor" element={<ApplyDoctor />} />
-              <Route path="/notification" element={<NotificationPage />} />
+              <Route
+                path="/apply-doctor"
+                element={<ApplyDoctor popUpHandler={popUpHandler} />}
+              />
+              <Route
+                path="/doctors-search"
+                element={<SearchDoctors popUpHandler={popUpHandler} />}
+              />
+              <Route
+                path="/update-profile"
+                element={<UpdateProfile popUpHandler={popUpHandler} />}
+              />
               <Route path="/admin/doctors" element={<Doctors />} />
               <Route path="/admin/users" element={<Users />} />
-              <Route path="/doctor/profile/:id" element={<Profile />} />
-              <Route
-                path="/doctor-appointments"
-                element={<DoctorAppointments />}
-              />
-              <Route
-                path="/doctor/book-appointment/:doctorId"
-                element={<BookingPage />}
-              />
-              <Route path="/appointments" element={<Appointments />} />
             </Routes>
           </BrowserRouter>
         </>

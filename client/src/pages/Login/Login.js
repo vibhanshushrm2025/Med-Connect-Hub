@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   Link,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import {  useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +11,11 @@ import { hideLoading, showLoading } from "../../redux/features/alertSlice";
 import { Wrapper } from "./Styles";
 const Login = ({popUpHandler}) => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const dispatch = useDispatch();
-  if (isAuthenticated) return <Navigate to={"/"} />; // Navigate functionality is good .
+  if (isAuthenticated)  return <Navigate to={'/'} /> // Navigate functionality is good .
   const submithandler = async (e) => {
     e.preventDefault();
 
@@ -37,21 +39,22 @@ const Login = ({popUpHandler}) => {
           withCredentials: true,
         }
       );
-      console.log(usr);
       const { data } = usr;
       const { message } = data;
-      dispatch(hideLoading());
       if (data.success) {
         const user = await axios.get(`/api/v1/users/me`, {
           withCredentials: true,
         });
         dispatch(setUser(user.data.user));
-        popUpHandler(true,"LoggedIn Successfully","Welcome Back !");
-
+        dispatch(hideLoading());
+        popUpHandler(true,"LogIn Successfull","Welcome Back !");
+        // navigate("/")
       } else {
-        popUpHandler(false,"LoggedIn Failed",message);
+        dispatch(hideLoading());
+        popUpHandler(false,"LogIn Failed",message);
         console.log(message);
       }
+      
     } catch (error) {
       dispatch(hideLoading());
       popUpHandler(false,"LoggedIn Failed","Something Went Wrong");

@@ -11,7 +11,7 @@ const Loader = () => {
     <div className="socket">
 			<div className="gel center-gel">
 				<div className="hex-brick h1"></div>
-				<div classNamename="hex-brick h2"></div>
+				<div className="hex-brick h2"></div>
 				<div className="hex-brick h3"></div>
 			</div>
 			<div className="gel c1 r1">

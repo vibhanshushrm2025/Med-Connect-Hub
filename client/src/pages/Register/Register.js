@@ -44,15 +44,17 @@ const Register = ({popUpHandler}) => {
         }
       );
       const { data } = usr;
-      dispatch(hideLoading());
+      
       if (data.success) {
         const user = await axios.get(`/api/v1/users/me`, {
           withCredentials: true,
         });
         dispatch(setUser(user.data.user));
+        dispatch(hideLoading());
         popUpHandler(true,"Register Successfully!","Welcome !!");
       } else {
         popUpHandler(false,usr.data.message, "Registration Failed");
+        dispatch(hideLoading());
         console.log(usr.data.message);
       }
     } catch (error) {
