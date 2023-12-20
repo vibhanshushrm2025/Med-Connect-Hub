@@ -46,8 +46,7 @@ const SearchDoctors = ({popUpHandler}) => {
         <Loader />
       ) : (
         <>
-          <Navbar />
-
+          <Navbar popUpHandler={popUpHandler} notifShow={false}/>
           <div class="search101">
             <input placeholder="Search by name..." type="text" onChange={searchDoc} />
             <button type="submit">Go</button>
