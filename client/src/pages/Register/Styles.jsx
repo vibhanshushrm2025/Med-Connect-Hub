@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import Box from "@mui/material/Box";
-import backgroundImage from "../../assests/images/loginBackground.jpg";
+import backgroundImage from "../../assests/images/authBack.jpg";
 
 export const Wrapper = styled(Box)({
   ".full-height-wrapper": {

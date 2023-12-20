@@ -48,10 +48,19 @@ export const doctorAppointmentsController = async (req, res) => {
     const appointments = await appointment.find({
       doctorId: doctor._id,
     });
+    const appointmentNew = await Promise.all(appointments.map(async (appointment) => {
+      const userId = appointment.userId;
+      const user1 = await mdl.findById(userId);
+      const userName = user1.name;
+      return {
+        ...appointment._doc,
+        userName,
+      };
+    }));
     res.status(200).send({
       success: true,
       message: "Doctor Appointments fetch Successfully",
-      data: appointments,
+      data: appointmentNew,
     });
   } catch (error) {
     console.log(error);

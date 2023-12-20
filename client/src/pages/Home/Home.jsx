@@ -269,7 +269,7 @@ const Home = ({popUpHandler}) => {
         <table className="zigzag" ref={tableRef}>
           <thead>
             <tr>
-              <th>Appointment Id</th>
+              <th>Patient Name</th>
               <th>Date & Time</th>
               <th>Status</th>
               <th>Actions</th>
@@ -282,7 +282,7 @@ const Home = ({popUpHandler}) => {
                 className={slideInIndices.includes(index) ? "slide-in" : ""}
               >
                 <td>
-                  {appoint._id}
+                  {appoint.userName}
                 </td>
                 <td>
                   {moment(appoint.date).format("DD-MM-YYYY")} &nbsp;

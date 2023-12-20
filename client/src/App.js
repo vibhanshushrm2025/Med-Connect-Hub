@@ -12,6 +12,7 @@ import ApplyDoctor from "./pages/ApplyDoctor/Applydoctor";
 import Doctors from "./pages/adminPannel/Doctors";
 import Users from "./pages/adminPannel/Users";
 import UpdateProfile from "./pages/UpdateProfile/UpdateProfile";
+import Profile from "./pages/Profile/Profile";
 import {
   NotificationContainer,
   NotificationManager,
@@ -93,6 +94,10 @@ function App() {
               <Route
                 path="/update-profile"
                 element={<UpdateProfile popUpHandler={popUpHandler} />}
+              />
+              <Route
+                path="/profile"
+                element={<Profile popUpHandler={popUpHandler} />}
               />
               <Route
                 path="/"

@@ -117,7 +117,7 @@ const Card = ({ doctor,popUpHandler }) => {
                 <input
                   type="date"
                   onChange={(value) => {
-                    setDate(moment(value).format("DD-MM-YYYY"));
+                    setDate(moment(value.target.value).format("DD-MM-YYYY"));
                   }}
                 />
               </div>
@@ -126,7 +126,7 @@ const Card = ({ doctor,popUpHandler }) => {
                 <input
                   type="time"
                   onChange={(value) => {
-                    setTime(moment(value).format("HH:mm"));
+                    setTime(value.target.value);
                   }}
                 />
               </div>
