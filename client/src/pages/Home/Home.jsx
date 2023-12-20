@@ -3,25 +3,22 @@ import axios from "axios";
 import { useEffect } from "react";
 import { Link, Navigate } from "react-router-dom";
 import Navbar from "../../components/Navbar/Navbar";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import "./Home.css";
 import profileImg from "../../assests/images/profile3.jpg";
-import { hideLoading, showLoading } from "../../redux/features/alertSlice";
-import {  setUser } from "../../redux/features/userSlice";
 import moment from "moment";
+import  Notifications  from "../../components/Notifications/Notifications";
 const Home = ({popUpHandler}) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const myRef = useRef(null);
   const appointmentRef = useRef(null);
   const tableRef = useRef(null);
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
   console.log(user);
-  const [notiActiveBar,setNotiActiveBar]=useState(true);
   const [appointments, setAppointments] = useState([]);
   const [slideInIndices, setSlideInIndices] = useState([]);
   const [appointmentsDoc, setAppointmentsDoc] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -128,39 +125,7 @@ const Home = ({popUpHandler}) => {
   
   
   
-  const handleMarkAllRead = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.post(
-        "/api/v1/users/get-all-notification",
-        {
-          userId: user._id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-        );
-        if (res.data.success) {
-        const user = await axios
-          .get(`/api/v1/users/me`, {
-            withCredentials: true,
-          });
-          dispatch(setUser(user.data.user));
-          popUpHandler(1,"All Notifications moved to Read","Marked as Read")
-      } else {
-        popUpHandler(0,res.data.message,"Failed to Mark as Read")
-      }
-      dispatch(hideLoading());
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      popUpHandler(0,"Something went wrong","Failed")
-    }
-  };
-
+  
   const handleStatus = async (record, status) => {
     console.log("a");
     try {
@@ -182,36 +147,7 @@ const Home = ({popUpHandler}) => {
   };
 
   // delete notifications
-  const handleDeleteAllRead = async () => {
-    try {
-      dispatch(showLoading());
-      const res = await axios.post(
-        "/api/v1/users/delete-all-notification",
-        { userId: user._id },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-        );
-      dispatch(hideLoading());
-      if (res.data.success) {
-        const user = await axios
-        .get(`/api/v1/users/me`, {
-            withCredentials: true,
-          });
-          dispatch(setUser(user.data.user));
-          popUpHandler(1,"All Notifications Deleted","Deleted")
-      } else {
-        popUpHandler(0,res.data.message,"Failed to Delete")
-      }
-    } catch (error) {
-      dispatch(hideLoading());
-      console.log(error);
-      popUpHandler(0,"Something went wrong","Failed")
-    }
-  };
+  
   
 
 
@@ -219,49 +155,11 @@ const Home = ({popUpHandler}) => {
 
 
   if(!isAuthenticated) return <Navigate to="/login" />;
+  if(user?.isAdmin) return <Navigate to="/admin" />;
   return (
     <>
       {isModalOpen && (
-        <div className="modal">
-          <span onClick={closeModal} className="close"></span>
-          <div className="notification-card">
-            <div className="toggle-bar">
-              <div className={`notiBar ${notiActiveBar ? 'notiActive' : ''}`}onClick={()=>setNotiActiveBar(true)}>New Notification</div>
-              <div className={`notiBar ${notiActiveBar ? '' : 'notiActive'}`} onClick={()=>setNotiActiveBar(false)}>Read Notification</div>
-            </div>
-          {notiActiveBar?(<div className="contentNoti">
-            <ul className="notiList">
-              {
-                user.notifcation.map((notif,index)=>{
-                  return <><li key={index} style={{ paddingBottom:'10px'}}>
-                    <span style={{fontWeight:'bold'}}>{notif.type}</span> <br />
-                    {notif.message}
-                    </li>
-                    </>
-                })
-              }
-
-            </ul>
-            <div className="markRead notiChange" onClick={handleMarkAllRead}>Mark all Read</div>
-          </div>):(<div className="contentNoti">
-            <ul className="notiList">
-            {
-                user.seennotification.map((notif,index)=>{
-                  return <><li key={index} style={{ paddingBottom:'10px'}}>
-                    <span style={{fontWeight:'bold'}}>{notif.type}</span> <br />
-                    {notif.message}
-                    </li>
-                    </>
-                })
-              }
-            </ul>
-            <div className="deleteRead notiChange" onClick={handleDeleteAllRead}>Delete all Seen</div>
-          </div>)
-          }
-          
-          
-          </div>
-        </div>
+        <Notifications closeModal={closeModal} popUpHandler={popUpHandler}/>
       )}
 
 

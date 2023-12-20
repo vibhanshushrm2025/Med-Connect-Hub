@@ -1,23 +1,26 @@
-import React from "react";
-import Layout from "../../components/Layout/Layout";
+import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { showLoading, hideLoading } from "../../redux/features/alertSlice";
+import { Navigate } from "react-router-dom";
+import { showLoading, hideLoading } from "../../redux/features/loader";
 import axios from "axios";
-import moment, { updateLocale } from "moment";
 import "./Style.css";
-import { desetUser } from "../../redux/features/userSlice";
 import Navbar from "../../components/Navbar/Navbar";
+import Notifications from "../../components/Notifications/Notifications";
+
 const UpdateProfile = ({ popUpHandler }) => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const { user } = useSelector((state) => state.user);
-  // console.log(user);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
   const dispatch = useDispatch();
-  // if (!isAuthenticated) navigate("/login");
-  //handle form
   const handleFinish = async (values) => {
     try {
-        const data = new FormData(values.target);
+      const data = new FormData(values.target);
       dispatch(showLoading());
       const res = await axios.post(
         "/api/v1/doctor/updateProfile",
@@ -34,27 +37,29 @@ const UpdateProfile = ({ popUpHandler }) => {
       );
       dispatch(hideLoading());
       if (res.data.success) {
-        // message.success(res.data.message);
         popUpHandler(true, res.data.message, "Success");
         console.log(res.data.message);
-        // navigate("/");
       } else {
-        // message.error(res.data.success);
         popUpHandler(false, res.data.message, "Error");
         console.log(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
-    popUpHandler(false, "Somthing Went Wrrong ", "Error");
+      popUpHandler(false, "Somthing Went Wrrong ", "Error");
       console.log(error);
-      //   message.error("Somthing Went Wrrong ");
     }
   };
   if (!isAuthenticated) return <Navigate to="/login" />;
   return (
-    // <Layout><>
     <>
-      <Navbar popUpHandler={popUpHandler} notifShow={false} />
+      <Navbar
+        popUpHandler={popUpHandler}
+        notifShow={true}
+        openModal={openModal}
+      />
+      {isModalOpen && (
+        <Notifications closeModal={closeModal} popUpHandler={popUpHandler} />
+      )}
       <div className="full-height-wrapper101">
         <form className="form" onSubmit={handleFinish}>
           <p className="title101">Update Profile </p>
@@ -162,7 +167,6 @@ const UpdateProfile = ({ popUpHandler }) => {
         </form>
       </div>
     </>
-    // </Layout>
   );
 };
 

@@ -3,8 +3,7 @@ import Navbar from "../../components/Navbar/Navbar";
 import "./Style.css";
 import Card from "../../components/Card/Card";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { hideLoading, showLoading } from "../../redux/features/alertSlice";
+import {  useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 
@@ -12,9 +11,8 @@ const SearchDoctors = ({popUpHandler}) => {
   const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
   const [doctors, setDoctors] = useState([]);
   const [doctorsTemp,setDoctorsTemp] = useState([]);
-  const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  // login user data
+
   const getUserData = async () => {
     try {
       const res = await axios.get("/api/v1/users/getAllDoctors", {
@@ -50,6 +48,7 @@ const SearchDoctors = ({popUpHandler}) => {
       ) : (
         <>
           <Navbar />
+
           <div class="search101">
             <input placeholder="Search by name..." type="text" onChange={searchDoc} />
             <button type="submit">Go</button>

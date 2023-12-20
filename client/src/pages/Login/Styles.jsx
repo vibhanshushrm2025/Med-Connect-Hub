@@ -51,7 +51,6 @@ export const Wrapper = styled(Box)({
     flexDirection: "column",
     gap: "35px",
     background: "#e3e3e3",
-    // boxShadow: "16px 16px 32px #c8c8c8,-16px -16px 32px #fefefe",
     borderRadius: "8px",
     boxShadow: "0 0 10px rgba(0, 0, 0, 0.5)", // to remove the shadow
     backdropFilter: "blur(10px)", // to create the blur effect
@@ -127,5 +126,3 @@ export const Wrapper = styled(Box)({
     color: "white",
   },
 });
-
-//

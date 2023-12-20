@@ -1,10 +1,8 @@
-import React, { useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { hideLoading, showLoading } from "../../redux/features/alertSlice";
-import { desetUser, setUser } from "../../redux/features/userSlice";
-// import { setUser } from "../redux/features/userSlice";
+import { desetUser } from "../../redux/features/auth";
 
 export default function ProtectedRoute({ children }) {
   const dispatch = useDispatch();
@@ -24,27 +22,25 @@ export default function ProtectedRoute({ children }) {
       if (!usr.data.success) {
         dispatch(desetUser());
         // dispatch(hideLoading());
-        navigate('/login');
+        navigate("/login");
       }
       // dispatch(hideLoading());
     } catch (error) {
       dispatch(desetUser());
       // dispatch(hideLoading());
-      navigate('/login');
+      navigate("/login");
       console.log(error);
-      
     }
   };
 
   useEffect(() => {
     // console.log(user);
-    if (user){
+    if (user) {
       console.log("a");
       getUser();
-    }
-    else{
+    } else {
       console.log("b");
-      navigate('/login');
+      navigate("/login");
       console.log("c");
     }
   }, []);

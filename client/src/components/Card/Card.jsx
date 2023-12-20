@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import "./Style.css";
 import moment from "moment";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import { set } from "mongoose";
 
 const Card = ({ doctor,popUpHandler }) => {
   const [date, setDate] = useState("");
   const user = useSelector((state)=>state.user.user);
   const [time, setTime] = useState();
   const [disable, setDisable] = useState(false);
-  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => {
     setIsModalOpen(true);
@@ -39,12 +36,9 @@ const Card = ({ doctor,popUpHandler }) => {
       setDisable(false);
       // dispatch(hideLoading());
       if (res.data.success) {
-        // setIsAvailable(true);
         popUpHandler(true,"Slot is Available","Proceed to book");
         // console.log("available ");
-        // message.success(res.data.message);
       } else {
-        // message.error(res.data.message);
         popUpHandler(false,res.data.message,"Try another time slot");
         // console.log(res.data.message);
       }
@@ -82,7 +76,6 @@ const Card = ({ doctor,popUpHandler }) => {
       setDisable(false);
       // dispatch(hideLoading());
       if (res.data.success) {
-        // message.success(res.data.message);
         popUpHandler(true,"Slot is booked ","Congrats!");
         // console.log("booked");
       }

@@ -1,14 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { hideLoading, showLoading } from "../../redux/features/alertSlice";
+import { hideLoading, showLoading } from "../../redux/features/loader";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { desetUser } from "../../redux/features/userSlice";
-import useSelection from "antd/lib/table/hooks/useSelection";
+import { desetUser } from "../../redux/features/auth";
 
 const Navbar = ({ openModal, popUpHandler, notifShow }) => {
   const dispatch = useDispatch();
-  const user =useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user);
   const handleLogout = async () => {
     try {
       dispatch(showLoading());
@@ -43,16 +42,27 @@ const Navbar = ({ openModal, popUpHandler, notifShow }) => {
             <li>
               <Link to="/">Home</Link>
             </li>
-            {user?.isDoctor?(<li>
-              <Link to="/update-profile">Update Profile</Link>
-            </li>):(<li>
-              <Link to="/doctors-search">Search Doctors</Link>
-            </li>)}
-            
+            {user?.isAdmin ? (
+              ""
+            ) : user?.isDoctor ? (
+              <li>
+                <Link to="/update-profile">Update Profile</Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/doctors-search">Search Doctors</Link>
+              </li>
+            )}
+
             {notifShow ? (
               <li>
                 <Link to="#" onClick={openModal}>
-                  Notifications<span style={{color:"#336dea"}}>{"("}{user?.notifcation.length}{")"}</span>
+                  Notifications
+                  <span style={{ color: "#336dea" }}>
+                    {"("}
+                    {user?.notifcation.length}
+                    {")"}
+                  </span>
                 </Link>
               </li>
             ) : (

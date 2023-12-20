@@ -94,7 +94,6 @@
     outline: 0;
     border: 1px solid rgba(105, 105, 105, 0.397);
     border-radius: 10px;
-    /* background-color: rgb(255, 255, 255,0.1); */
   }
 
 
@@ -115,14 +114,12 @@
   .form label .input:placeholder-shown + span {
     top: 15px;
     font-size: 0.9em;
-    /* background-color: red; */
   }
   
   .form label .input:focus + span,.form label .input:valid + span {
     top: 30px;
     font-size: 0.7em;
     font-weight: 600;
-    /* background-color: green; */
   }
   
   .form label .input:valid + span {
@@ -131,7 +128,6 @@
 
 
   .form label .input:placeholder-shown + .placeholder-indicator {
-    /* background-color: red; */
     position: absolute;
     font-size: 0.9em;
     left: 10px;
@@ -143,7 +139,6 @@
   }
   
   .form label .input:focus + .placeholder-indicator {
-    /* background-color: yellow; */
     top: 30px;
     font-size: 0.7em;
     font-weight: 600;

@@ -5,8 +5,8 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "./redux/features/userSlice";
-import { hideLoading, showLoading } from "./redux/features/alertSlice";
+import { setUser } from "./redux/features/auth";
+import { hideLoading, showLoading } from "./redux/features/loader";
 import Loader from "./components/Loader/Loader";
 import ApplyDoctor from "./pages/ApplyDoctor/Applydoctor";
 import Doctors from "./pages/adminPannel/Doctors";
@@ -18,6 +18,7 @@ import {
 } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import SearchDoctors from "./pages/SearchDoctors/SearchDoctors";
+import Home from "./pages/adminPannel/Home";
 
 function App() {
   const dispatch = useDispatch();
@@ -61,9 +62,18 @@ function App() {
           <BrowserRouter>
             <Routes>
               <Route
-                path="/"
-                element={<HomePage popUpHandler={popUpHandler} />}
+                path="/admin/doctors"
+                element={<Doctors popUpHandler={popUpHandler} />}
               />
+              <Route
+                path="/admin/users"
+                element={<Users popUpHandler={popUpHandler} />}
+              />
+              <Route
+                path="/admin"
+                element={<Home popUpHandler={popUpHandler} />}
+              />
+
               <Route
                 path="/login"
                 element={<Login popUpHandler={popUpHandler} />}
@@ -84,8 +94,10 @@ function App() {
                 path="/update-profile"
                 element={<UpdateProfile popUpHandler={popUpHandler} />}
               />
-              <Route path="/admin/doctors" element={<Doctors />} />
-              <Route path="/admin/users" element={<Users />} />
+              <Route
+                path="/"
+                element={<HomePage popUpHandler={popUpHandler} />}
+              />
             </Routes>
           </BrowserRouter>
         </>

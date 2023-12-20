@@ -10,17 +10,15 @@ export const register = async (req, res, next) => {
     const { name, email, password } = req.body;
     const user = await mdl.findOne({ email: email }); 
     if (user) {
-      // using the default express provided error handler
       return next(new errorHandlingClass("user already exits", 201, false));
     }
-    // else you have to register the user . bcrypt the password and send it through mongodb . and make the cookie .
     const hashedPassword = await bcrypt.hash(password, 10);
     const uss = await mdl.create({
       name,
       email,
       password: hashedPassword,
     });
-    setCookie(uss, 201, "Registered Successfully", true, res); // setcookie , a the function that is repeating , so , are put inside the utils features.js
+    setCookie(uss, 201, "Registered Successfully", true, res); 
   } catch (error) {
     
     next(error);
@@ -51,9 +49,8 @@ export const login = async (req, res, next) => {
     // the fields along with the one whose select is true
     if (!user)
       return next(new errorHandlingClass("user doesn't exist", 201, false));
-    const tof = await bcrypt.compare(password, user.password); // if user exists ,then compare the passwords ,
+    const tof = await bcrypt.compare(password, user.password); 
     if (tof) {
-      // if user exists , then make arrangements of the cookie , encrypt the token , and set expiry date
       setCookie(user, 201, "LoggedIn successfully", true, res);
     } else {
       return next(
@@ -87,7 +84,7 @@ export const logout =  (req, res, next) => {
     expires: new Date(Date.now()),
     httpOnly: true,
     sameSite:process.env.NODE_ENV==="development"?"lax":"none",
-    secure :process.env.NODE_ENV==="development"?false:true // Above two properties has to be different on deploying , so .dotenv is used 
+    secure :process.env.NODE_ENV==="development"?false:true 
   });
   res.send({
     success: true,
@@ -150,7 +147,6 @@ export const getAllNotificationController = async (req, res) => {
   }
 };
 
-// delete notifications
 export const deleteAllNotificationController = async (req, res) => {
   try {
     const user = await mdl.findOne({ _id: req.body.userId });
@@ -173,7 +169,7 @@ export const deleteAllNotificationController = async (req, res) => {
   }
 };
 
-//BOOK APPOINTMENT
+
 export const bookeAppointmnetController = async (req, res) => {
   try {
     req.body.date = moment(req.body.date, "DD-MM-YYYY").toISOString();
@@ -202,7 +198,6 @@ export const bookeAppointmnetController = async (req, res) => {
   }
 };
 
-// booking bookingAvailabilityController
 export const bookingAvailabilityController = async (req, res) => {
   try {
     const date = moment(req.body.date, "DD-MM-YY").toISOString();

@@ -1,20 +1,12 @@
-import {
-  // BrowserRouter as Router,
-  // Routes,
-  // Route,
-  Link,
-  Navigate,
-} from "react-router-dom";
-import {  useState } from "react";
+import { Link, Navigate } from "react-router-dom";
+import { useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../redux/features/userSlice";
-import { hideLoading, showLoading } from "../../redux/features/alertSlice";
+import { setUser } from "../../redux/features/auth";
+import { hideLoading, showLoading } from "../../redux/features/loader";
 import { Wrapper } from "./Styles";
 
-
-const Register = ({popUpHandler}) => {
-  
+const Register = ({ popUpHandler }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,11 +15,7 @@ const Register = ({popUpHandler}) => {
   if (isAuthenticated) return <Navigate to={"/"} />;
   const submithandler = async (e) => {
     e.preventDefault();
-    // one thing to notice in the below try catch block is that , when you get 404 request from the api , it treat it as a error and move to the
-    // catch part , althrough if the status code 404 is sent intentionally .
-    // So , I changed all the 404 response from  the api into the 201 status code
     try {
-      //through axios , 1st argument ---> link , 2nd argument ---> body json , 3rd argument--->always same as below
       dispatch(showLoading());
       const usr = await axios.post(
         `/api/v1/users/register`,
@@ -44,22 +32,22 @@ const Register = ({popUpHandler}) => {
         }
       );
       const { data } = usr;
-      
+
       if (data.success) {
         const user = await axios.get(`/api/v1/users/me`, {
           withCredentials: true,
         });
         dispatch(setUser(user.data.user));
         dispatch(hideLoading());
-        popUpHandler(true,"Register Successfully!","Welcome !!");
+        popUpHandler(true, "Register Successfully!", "Welcome !!");
       } else {
-        popUpHandler(false,usr.data.message, "Registration Failed");
+        popUpHandler(false, usr.data.message, "Registration Failed");
         dispatch(hideLoading());
         console.log(usr.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
-      popUpHandler(false,"Something Went Wrong", "Registration Failed");
+      popUpHandler(false, "Something Went Wrong", "Registration Failed");
       console.log(error);
     }
   };
@@ -72,7 +60,7 @@ const Register = ({popUpHandler}) => {
             <h1 className="headingname">Med Connect Hub </h1>
           </div>
 
-          <div className="container" >
+          <div className="container">
             <div className="card101">
               <span className="login">Create Account </span>
               <div className="inputBox">
@@ -112,10 +100,15 @@ const Register = ({popUpHandler}) => {
               <button type="submit" className="enter">
                 Register
               </button>
-              <Link to="/login"  style={{ textDecoration: "none", marginTop: "-20px", marginBottom: "-40px" }}>
-                <button className="enter">
-                  Login-{">"}
-                </button>
+              <Link
+                to="/login"
+                style={{
+                  textDecoration: "none",
+                  marginTop: "-20px",
+                  marginBottom: "-40px",
+                }}
+              >
+                <button className="enter">Login-{">"}</button>
               </Link>
             </div>
           </div>
