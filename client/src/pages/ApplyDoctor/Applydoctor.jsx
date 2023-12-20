@@ -25,7 +25,6 @@ const ApplyDoctor = ({ popUpHandler }) => {
   const handleFinish = async (event) => {
     event.preventDefault();
     const data = new FormData(event.target);
-    console.log("Form data:", Object.fromEntries(data));
     try {
       dispatch(showLoading());
       const res = await axios.post(

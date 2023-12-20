@@ -40,7 +40,6 @@ const Login = ({ popUpHandler }) => {
       } else {
         dispatch(hideLoading());
         popUpHandler(false, "LogIn Failed", message);
-        console.log(message);
       }
     } catch (error) {
       dispatch(hideLoading());

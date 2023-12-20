@@ -55,7 +55,6 @@ const Doctors = ({ popUpHandler }) => {
       });
       if (res.data.success) {
         setDoctors(res.data.data);
-        console.log("doctors", doctors);
       }
     } catch (error) {
       console.log(error);
@@ -66,7 +65,6 @@ const Doctors = ({ popUpHandler }) => {
   const handleAccountStatus = async (record, status) => {
     try {
       dispatch(showLoading());
-      console.log(status);
       const res = await axios.post(
         "/api/v1/admin/changeAccountStatus",
         { doctorId: record._id, userId: record.userId, status: status },

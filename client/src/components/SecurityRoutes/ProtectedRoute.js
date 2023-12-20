@@ -18,7 +18,6 @@ export default function ProtectedRoute({ children }) {
       const usr = await axios.get(`/api/v1/users/me`, {
         withCredentials: true,
       });
-      console.log(usr.data.success);
       if (!usr.data.success) {
         dispatch(desetUser());
         // dispatch(hideLoading());
@@ -36,12 +35,9 @@ export default function ProtectedRoute({ children }) {
   useEffect(() => {
     // console.log(user);
     if (user) {
-      console.log("a");
       getUser();
     } else {
-      console.log("b");
       navigate("/login");
-      console.log("c");
     }
   }, []);
   return children;

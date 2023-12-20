@@ -14,7 +14,6 @@ const Home = ({popUpHandler}) => {
   const appointmentRef = useRef(null);
   const tableRef = useRef(null);
   const user = useSelector((state) => state.user.user);
-  console.log(user);
   const [appointments, setAppointments] = useState([]);
   const [slideInIndices, setSlideInIndices] = useState([]);
   const [appointmentsDoc, setAppointmentsDoc] = useState([]);
@@ -63,7 +62,6 @@ const Home = ({popUpHandler}) => {
       });
       if (res.data.success) {
         setAppointmentsDoc(res.data.data);
-        console.log(res.data.data);
       }
     } catch (error) {
       console.log(error);
@@ -127,7 +125,6 @@ const Home = ({popUpHandler}) => {
   
   
   const handleStatus = async (record, status) => {
-    console.log("a");
     try {
       const res = await axios.post(
         "/api/v1/doctor/update-status",

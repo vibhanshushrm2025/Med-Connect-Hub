@@ -13,7 +13,6 @@ export default function PublicRoute({ children }) {
       const usr = await axios.get(`/api/v1/users/me`, {
         withCredentials: true,
       });
-      console.log(usr.data.success);
       if (usr.data.success) {
         // dispatch(desetUser());
         // dispatch(hideLoading());

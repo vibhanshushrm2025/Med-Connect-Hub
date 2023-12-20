@@ -21,7 +21,6 @@ const SearchDoctors = ({popUpHandler}) => {
       if (res.data.success) {
         setDoctors(res.data.data);
         setDoctorsTemp(res.data.data);
-        console.log(res.data.data);
       }
       setLoading(false);
     } catch (error) {

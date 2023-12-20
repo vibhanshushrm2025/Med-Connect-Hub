@@ -43,7 +43,6 @@ const Register = ({ popUpHandler }) => {
       } else {
         popUpHandler(false, usr.data.message, "Registration Failed");
         dispatch(hideLoading());
-        console.log(usr.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());

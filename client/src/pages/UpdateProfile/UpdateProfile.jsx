@@ -38,10 +38,8 @@ const UpdateProfile = ({ popUpHandler }) => {
       dispatch(hideLoading());
       if (res.data.success) {
         popUpHandler(true, res.data.message, "Success");
-        console.log(res.data.message);
       } else {
         popUpHandler(false, res.data.message, "Error");
-        console.log(res.data.message);
       }
     } catch (error) {
       dispatch(hideLoading());
