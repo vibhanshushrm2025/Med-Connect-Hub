@@ -143,6 +143,9 @@ const Home = ({popUpHandler}) => {
     }
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   // delete notifications
   
   

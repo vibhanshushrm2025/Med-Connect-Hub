@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { showLoading, hideLoading } from "../../redux/features/loader";
@@ -54,6 +54,9 @@ const ApplyDoctor = ({ popUpHandler }) => {
       popUpHandler(false, "Somthing Went Wrrong ", "Error");
     }
   };
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   if (!isAuthenticated) return <Navigate to="/login" />;
   return (
     <>

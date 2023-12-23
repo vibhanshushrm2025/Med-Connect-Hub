@@ -3,6 +3,7 @@ import "./Style.css";
 import moment from "moment";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Card = ({ doctor,popUpHandler }) => {
   const [date, setDate] = useState("");
@@ -10,6 +11,7 @@ const Card = ({ doctor,popUpHandler }) => {
   const [time, setTime] = useState();
   const [disable, setDisable] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -77,7 +79,9 @@ const Card = ({ doctor,popUpHandler }) => {
       // dispatch(hideLoading());
       if (res.data.success) {
         popUpHandler(true,"Slot is booked ","Congrats!");
+        navigate('/');
         // console.log("booked");
+
       }
       else{
         // console.log(res.data.message);

@@ -32,10 +32,13 @@ const SearchDoctors = ({popUpHandler}) => {
   useEffect(() => {
     getUserData();
   }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const searchDoc = (e) => {
     const value = e.target.value;
     const temp = doctors.filter((doctor) => {
-      return doctor.firstName.toLowerCase().includes(value.toLowerCase()) || doctor.lastName.toLowerCase().includes(value.toLowerCase());
+      return doctor.firstName.toLowerCase().startsWith(value.toLowerCase()) || doctor.lastName.toLowerCase().startsWith(value.toLowerCase());
     });
     setDoctorsTemp(temp);
   }
